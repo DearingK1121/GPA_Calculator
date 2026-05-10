@@ -105,9 +105,17 @@ Enhance the system with:
 
 Pull requests welcome!
 
+## � Author
+
+Created by: Koda R Dearing
+
 ## 📄 License
 
 MIT License - Free to use and modify.
+
+## 📚 Citation
+
+If you edit, modify, or use this code in any way, please cite the original source and author. Proper attribution helps support open-source development!
   - course type (regular, honors, AP)
   - weight multiplier
 

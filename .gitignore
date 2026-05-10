@@ -1,0 +1,8 @@
+# Ignore personal data and generated files
+data/
+new_reports/
+past_reports/
+errors/
+__pycache__/
+.DS_Store
+*.pyc

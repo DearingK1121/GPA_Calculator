@@ -19,6 +19,9 @@ from gpa import (
 
 from utils import build_report, export_to_csv
 
+import traceback
+from datetime import datetime
+
 
 # -----------------------------
 # INPUT SYSTEM
@@ -123,7 +126,7 @@ def calculate_gpa_menu(student):
     print("2. Year GPA")
     print("3. Cumulative GPA")
 
-    choice = input("Select option: ")
+    choice = input("Select option: ").strip()
 
     if choice == "1":
         semester = input("Enter semester (e.g. Fall 2026): ").strip()
@@ -133,7 +136,9 @@ def calculate_gpa_menu(student):
             print("Semester not found.")
             return
 
-        report = build_report(student, gpa, "SEMESTER GPA", semester)
+        mode = "SEMESTER GPA"
+        extra_label = semester
+        report = build_report(student, gpa, mode, extra_label)
 
     elif choice == "2":
         year = int(input("Enter year (e.g. 2026): "))
@@ -143,7 +148,9 @@ def calculate_gpa_menu(student):
             print("No data for that year.")
             return
 
-        report = build_report(student, gpa, "YEAR GPA", str(year))
+        mode = "YEAR GPA"
+        extra_label = str(year)
+        report = build_report(student, gpa, mode, extra_label)
 
     elif choice == "3":
         gpa = get_cumulative_gpa(student)
@@ -152,7 +159,9 @@ def calculate_gpa_menu(student):
             print("No courses found for this student.")
             return
 
-        report = build_report(student, gpa, "CUMULATIVE GPA", "All Terms")
+        mode = "CUMULATIVE GPA"
+        extra_label = "All Terms"
+        report = build_report(student, gpa, mode, extra_label)
 
     else:
         print("Invalid option.")
@@ -173,7 +182,7 @@ def calculate_gpa_menu(student):
     export_choice = input("Export courses to CSV? (y/n): ").strip().lower()
     if export_choice == "y":
         csv_path = os.path.join(NEW_DIR, "report.csv")
-        export_to_csv(student, mode, extra_label, csv_path)
+        export_to_csv(student, mode, extra_label, gpa, csv_path)
         print(f"CSV exported to: {csv_path}")
 
 
@@ -196,28 +205,40 @@ def select_student():
 def main():
     ensure_dirs()
 
-    while True:
-        print("\n===== SUPER GPA SYSTEM =====")
-        print("1. Add Student")
-        print("2. View Students")
-        print("3. Calculate GPA")
-        print("4. Help")
-        print("5. Exit")
+    try:
+        while True:
+            print("\n===== SUPER GPA SYSTEM =====")
+            print("1. Add Student")
+            print("2. View Students")
+            print("3. Calculate GPA")
+            print("4. Help")
+            print("5. Exit")
 
-        choice = input("Select option: ")
+            choice = input("Select option: ").strip()
 
-        if choice == "1":
-            create_student()
-        elif choice == "2":
-            view_students()
-        elif choice == "3":
-            select_student()
-        elif choice == "4":
-            print_help()
-        elif choice == "5":
-            break
-        else:
-            print("Invalid option.")
+            if choice == "1":
+                create_student()
+            elif choice == "2":
+                view_students()
+            elif choice == "3":
+                select_student()
+            elif choice == "4":
+                print_help()
+            elif choice == "5":
+                break
+            else:
+                print("Invalid option.")
+    except Exception as e:
+        error_msg = f"Error occurred at {datetime.now()}:\n{traceback.format_exc()}"
+        date_str = datetime.now().strftime("%Y-%m-%d")
+        time_str = datetime.now().strftime("%H%M%S")
+        date_dir = f"errors/{date_str}"
+        os.makedirs(date_dir, exist_ok=True)
+        error_file = f"{date_dir}/error_{time_str}.txt"
+        with open(error_file, "w") as f:
+            f.write(error_msg)
+        print(f"An error occurred. Details saved to {error_file}")
+        print("Please check the errors folder and try again.")
 
 
 def print_help():

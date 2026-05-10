@@ -13,8 +13,9 @@ A modular Python-based GPA management system designed to simulate a real univers
 - **Weighted Grading**: Supports regular (1.0x), honors (1.1x), and AP (1.2x) courses, capped at 4.0.
 - **Persistent Storage**: JSON database with corruption safety, atomic writes, and automatic backups.
 - **Report Generation**: Formatted text reports saved to `new_reports/`, auto-archived to `past_reports/` with timestamps.
-- **CSV Export**: Export course data to CSV after GPA calculation for easy analysis.
+- **CSV Export**: Export course data to a formatted text table after GPA calculation, including GPA summaries (unweighted, weighted, cumulative).
 - **Input Validation**: Robust error handling for grades (A-F), credits (>0), course types, and unique student IDs.
+- **Error Logging**: Exceptions saved to `errors/YYYY-MM-DD/` subfolders with timestamps for debugging.
 - **Command-Line Interface**: Simple menu-driven system with built-in help.
 - **Modular Design**: Separated concerns across files for maintainability.
 
@@ -34,6 +35,7 @@ super-gpa-calculator/
 │
 ├── new_reports/     # Latest generated reports (text & CSV)
 ├── past_reports/    # Archived reports with timestamps
+├── errors/          # Error logs organized by date (YYYY-MM-DD/error_HHMMSS.txt)
 │
 └── README.md        # This documentation
 ```
@@ -85,7 +87,7 @@ Run `python3 main.py` to launch the CLI menu.
 - **Weighting Formula**: `min(grade_points × weight, 4.0) × credits`
 - **Storage Safety**: Atomic JSON writes prevent corruption; backups on read errors.
 - **Report Filtering**: Shows only relevant courses based on GPA type.
-- **CSV Format**: Columns: Semester, Course Name, Grade, Credits, Type, Weight
+- **Report Export**: Formatted text table with aligned columns, headers, borders, and GPA summaries (unweighted, weighted, cumulative).
 
 ## 📝 Changelog
 

@@ -24,6 +24,7 @@ def ensure_dirs():
     os.makedirs(NEW_DIR, exist_ok=True)
     os.makedirs(OLD_DIR, exist_ok=True)
     os.makedirs(BACKUP_DIR, exist_ok=True)
+    os.makedirs("errors", exist_ok=True)
 
     if not os.path.exists(STUDENT_FILE):
         safe_write_json(STUDENT_FILE, {})
